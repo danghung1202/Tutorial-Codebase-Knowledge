@@ -1,0 +1,15 @@
+# Core packages
+pocketflow>=0.0.1
+python-dotenv>=1.0.0
+pyyaml>=6.0
+streamlit>=1.30.0
+markdown>=3.3.0
+
+# LLM APIs 
+google-generativeai>=0.3.0
+anthropic>=0.18.1
+openai>=1.12.0
+# deepseek-ai  # Uncomment if needed and available on PyPI
+
+# Utilities
+requests>=2.31.0
