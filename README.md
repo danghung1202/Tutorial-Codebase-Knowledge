@@ -8,10 +8,9 @@ Generate beginner-friendly tutorials for any codebase using AI!
 - 📊 **Interactive Visualization**: View relationships between components
 - 📝 **Tutorial Generation**: Create a multi-chapter tutorial with code examples and diagrams
 - 🧠 **Multiple LLM Options**: Use Google Gemini, OpenAI, Claude, or DeepSeek models
+- 🌐 **User-Friendly Interface**: Easy-to-use Streamlit web interface for configuration and generation
 
-## Quick Start
-
-### Installation
+## 🚀 Getting Started
 
 1. Clone this repository:
    ```bash
@@ -24,48 +23,46 @@ Generate beginner-friendly tutorials for any codebase using AI!
    pip install -r requirements.txt
    ```
 
-3. Set up your environment variables (optional):
-   ```bash
-   # Create a .env file with your API keys
-   touch .env
+3. Set up your environment variables in a `.env` file:
    ```
-   
-   Example .env file:
-   ```
-   GEMINI_API_KEY=your_gemini_api_key
-   OPENAI_API_KEY=your_openai_api_key
-   ANTHROPIC_API_KEY=your_anthropic_api_key
-   GITHUB_TOKEN=your_github_token
+   GEMINI_API_KEY=your_gemini_api_key  # Required for default Gemini model
+   OPENAI_API_KEY=your_openai_api_key  # Optional, for OpenAI models
+   ANTHROPIC_API_KEY=your_anthropic_api_key  # Optional, for Claude models
+   GITHUB_TOKEN=your_github_token  # Optional, for private repositories
    ```
 
-### Using the Streamlit App (Recommended)
-
-1. Run the Streamlit app:
+4. Launch the web interface:
    ```bash
    streamlit run app.py
    ```
 
-2. Open your browser at the provided URL (usually http://localhost:8501)
+   This will open a browser window where you can:
+   - Enter a GitHub repository URL or upload a local project
+   - Choose your preferred LLM model
+   - Configure analysis settings
+   - Generate and view your tutorial in real-time
 
-3. Use the interface to configure your project parameters:
-   - Select a GitHub repository or upload a local project ZIP
-   - Configure file patterns and LLM settings
-   - Generate your tutorial!
-
-### Using the Command Line Interface
-
-You can also run the tool from the command line:
-
+For advanced users who prefer the command line, you can also use:
 ```bash
-# Generate tutorial from a GitHub repo
-python main.py --repo https://github.com/username/repo-name
+# Analyze a GitHub repository
+python main.py --repo https://github.com/username/repo --include "*.py" "*.js" --exclude "tests/*"
 
-# Generate tutorial from a local directory
-python main.py --dir /path/to/your/project
+# Analyze a local directory
+python main.py --dir /path/to/your/codebase --include "*.py" --exclude "*test*"
 
-# Additional options
-python main.py --help
+# Generate in different languages
+python main.py --repo https://github.com/username/repo --language "Chinese"
 ```
+
+Common CLI options:
+- `--repo` or `--dir` - GitHub repo URL or local directory path
+- `-n, --name` - Project name (optional)
+- `-t, --token` - GitHub token for private repos
+- `-o, --output` - Output directory (default: ./output)
+- `-i, --include` - Files to include (e.g., "*.py" "*.js")
+- `-e, --exclude` - Files to exclude (e.g., "tests/*")
+- `-s, --max-size` - Maximum file size in bytes (default: 100KB)
+- `--language` - Tutorial language (default: "english")
 
 ## How It Works
 
@@ -77,12 +74,14 @@ python main.py --help
 
 ## Customization
 
-The Streamlit app allows you to customize:
+The web interface provides easy access to all customization options:
 
 - **LLM Provider**: Choose between Google Gemini, Anthropic Claude, OpenAI, or DeepSeek
 - **Model Parameters**: Select specific models and configure API settings
-- **File Filtering**: Include/exclude specific file patterns
-- **Output Settings**: Customize the output directory
+- **File Filtering**: Include/exclude specific file patterns with an intuitive interface
+- **Output Settings**: Customize the output directory and format
+- **Language Selection**: Generate tutorials in different languages
+- **Real-time Preview**: View the generated content as it's being created
 
 ## Output Examples
 
@@ -118,7 +117,7 @@ This is a tutorial project of [Pocket Flow](https://github.com/The-Pocket/Pocket
 
 - Check out the [Substack Post Tutorial](https://zacharyhuang.substack.com/p/ai-codebase-knowledge-builder-full) for more!
 
-&nbsp;&nbsp;**🔸 🎉 Reached Hacker News Front Page** (April 2025) with >800 up‑votes:  [Discussion »](https://news.ycombinator.com/item?id=43739456)
+&nbsp;&nbsp;**🔸 🎉 Reached Hacker News Front Page** (April 2025) with >800 up‑votes:  [Discussion »](https://news.ycombinator.com/item?id=43739456)
 
 ## ⭐ Example Results for Popular GitHub Repositories!
 
@@ -169,51 +168,6 @@ This is a tutorial project of [Pocket Flow](https://github.com/The-Pocket/Pocket
 - [SmolaAgents](https://the-pocket.github.io/Tutorial-Codebase-Knowledge/SmolaAgents) - Build tiny AI agents that punch way above their weight class!
 
 - Showcase Your AI-Generated Tutorials in [Discussions](https://github.com/The-Pocket/Tutorial-Codebase-Knowledge/discussions)!
-
-## 🚀 Getting Started
-
-1. Clone this repository
-
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Set up LLM in [`utils/call_llm.py`](./utils/call_llm.py) by providing credentials. By default, you can use the AI Studio key with this client for Gemini Pro 2.5:
-
-   ```python
-   client = genai.Client(
-     api_key=os.getenv("GEMINI_API_KEY", "your-api_key"),
-   )
-   ```
-
-   You can use your own models. We highly recommend the latest models with thinking capabilities (Claude 3.7 with thinking, O1). You can verify that it is correctly set up by running:
-   ```bash
-   python utils/call_llm.py
-   ```
-
-4. Generate a complete codebase tutorial by running the main script:
-    ```bash
-    # Analyze a GitHub repository
-    python main.py --repo https://github.com/username/repo --include "*.py" "*.js" --exclude "tests/*" --max-size 50000
-
-    # Or, analyze a local directory
-    python main.py --dir /path/to/your/codebase --include "*.py" --exclude "*test*"
-
-    # Or, generate a tutorial in Chinese
-    python main.py --repo https://github.com/username/repo --language "Chinese"
-    ```
-
-    - `--repo` or `--dir` - Specify either a GitHub repo URL or a local directory path (required, mutually exclusive)
-    - `-n, --name` - Project name (optional, derived from URL/directory if omitted)
-    - `-t, --token` - GitHub token (or set GITHUB_TOKEN environment variable)
-    - `-o, --output` - Output directory (default: ./output)
-    - `-i, --include` - Files to include (e.g., "*.py" "*.js")
-    - `-e, --exclude` - Files to exclude (e.g., "tests/*" "docs/*")
-    - `-s, --max-size` - Maximum file size in bytes (default: 100KB)
-    - `--language` - Language for the generated tutorial (default: "english")
-
-The application will crawl the repository, analyze the codebase structure, generate tutorial content in the specified language, and save the output in the specified directory (default: ./output).
 
 ## 💡 Development Tutorial
 
