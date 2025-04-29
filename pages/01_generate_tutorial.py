@@ -13,13 +13,13 @@ dotenv.load_dotenv()
 DEFAULT_INCLUDE_PATTERNS = {
     "*.py", "*.js", "*.jsx", "*.ts", "*.tsx", "*.go", "*.java", "*.pyi", "*.pyx", 
     "*.c", "*.cc", "*.cpp", "*.h", "*.md", "*.rst", "Dockerfile", 
-    "Makefile", "*.yaml", "*.yml",
+    "Makefile", "*.yaml", "*.yml", "*.cs"
 }
 
 DEFAULT_EXCLUDE_PATTERNS = {
     "*test*", "tests/*", "docs/*", "examples/*", "v1/*", 
     "dist/*", "build/*", "experimental/*", "deprecated/*", 
-    "legacy/*", ".git/*", ".github/*", ".next/*", ".vscode/*", "obj/*", "bin/*", "node_modules/*", "*.log"
+    "legacy/*", ".git/*", ".github/*", ".next/*", ".vscode/*", "obj/*", "bin/*", "node_modules/*", "*.log", "*.dll", "*.exe", "*.bat", "*.sh", "*.bash"
 }
 
 # Set up page config

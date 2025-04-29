@@ -6,7 +6,7 @@ streamlit>=1.30.0
 markdown>=3.3.0
 
 # LLM APIs 
-google-generativeai>=0.3.0
+google-genai>=1.12.1
 anthropic>=0.18.1
 openai>=1.12.0
 # deepseek-ai  # Uncomment if needed and available on PyPI
