@@ -14,7 +14,7 @@ Generate beginner-friendly tutorials for any codebase using AI!
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/The-Pocket/Tutorial-Codebase-Knowledge.git
+   git clone https://github.com/danghung1202/Tutorial-Codebase-Knowledge.git
    cd Tutorial-Codebase-Knowledge
    ```
 
@@ -33,7 +33,11 @@ Generate beginner-friendly tutorials for any codebase using AI!
 
 4. Launch the web interface:
    ```bash
-   streamlit run app.py
+   python -m streamlit run Home.py
+   ```
+   or
+   ```bash
+   streamlit run Home.py
    ```
 
    This will open a browser window where you can:
