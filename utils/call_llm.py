@@ -27,7 +27,6 @@ cache_file = "llm_cache.json"
 MODEL_CONFIGS = {
     "gemini": {
         "default_model": "gemini-2.0-flash",
-        "env_model": "GEMINI_MODEL",
         "env_api_key": "GEMINI_API_KEY",
         "env_project_id": "GEMINI_PROJECT_ID", 
         "env_location": "GEMINI_LOCATION"
@@ -140,12 +139,12 @@ def _call_gemini(prompt: str, specific_model: Optional[str] = None) -> str:
         )
     else:
         client = genai.Client(
-            api_key=os.getenv(config["env_api_key"], config["default_api_key"]),
+            # Get API key from environment variable specified in config["env_api_key"]
+            api_key=os.getenv(config["env_api_key"], "default_api_key is not set"),
         )
     
     # Use specific model if provided, otherwise use default or env var
-    model_name = specific_model or os.getenv(config["env_model"], config["default_model"])
-    
+    model_name = specific_model or config["default_model"]
     response = client.models.generate_content(
         model=model_name,
         contents=[prompt]
@@ -158,7 +157,7 @@ def _call_claude(prompt: str, specific_model: Optional[str] = None) -> str:
     from anthropic import Anthropic
     
     config = MODEL_CONFIGS["claude"]
-    api_key = os.environ.get(config["env_api_key"], "your-api-key")
+    api_key = os.environ.get(config["env_api_key"], "default_api_key is not set")
     model_name = specific_model or config["default_model"]
     
     client = Anthropic(api_key=api_key)
@@ -181,11 +180,11 @@ def _call_openai(prompt: str, specific_model: Optional[str] = None) -> str:
     from openai import OpenAI
     
     config = MODEL_CONFIGS["openai"]
-    api_key = os.environ.get(config["env_api_key"], config["default_api_key"])
+    api_key = os.environ.get(config["env_api_key"], "default_api_key is not set")
     model_name = specific_model or config["default_model"]
     
     client = OpenAI(api_key=api_key)
-    r = client.chat.completions.create(
+    response = client.chat.completions.create(
         model=model_name,
         messages=[{"role": "user", "content": prompt}],
         response_format={
@@ -195,24 +194,18 @@ def _call_openai(prompt: str, specific_model: Optional[str] = None) -> str:
         store=False
     )
     
-    return r.choices[0].message.content
+    return response.choices[0].message.content
 
 def _call_deepseek(prompt: str, specific_model: Optional[str] = None) -> str:
-    """Call DeepSeek API with retry logic"""
+    """Call DeepSeek API"""
     from deepseek import DeepSeekAPI
     
     config = MODEL_CONFIGS["deepseek"]
-    api_key = os.environ.get(config["env_api_key"], config["default_api_key"])
+    api_key = os.environ.get(config["env_api_key"], "default_api_key is not set")
     model_name = specific_model or config["default_model"]
     
     client = DeepSeekAPI(api_key=api_key)
-    
-    max_retries = 3
-    retry_delay = 2  # seconds
-    
-    for attempt in range(max_retries):
-        try:
-            response = client.chat_completion(
+    response = client.chat_completion(
                 model=model_name,
                 messages=[
                     {"role": "user", "content": prompt}
@@ -220,12 +213,7 @@ def _call_deepseek(prompt: str, specific_model: Optional[str] = None) -> str:
                 temperature=0.7,
                 max_tokens=4096
             )
-            return response.choices[0].message.content
-        except (requests.exceptions.RequestException, ConnectionResetError) as e:
-            if attempt == max_retries - 1:
-                raise
-            logger.warning(f"API call failed (attempt {attempt + 1}/{max_retries}): {str(e)}")
-            time.sleep(retry_delay * (attempt + 1))  # Exponential backoff
+    return response.choices[0].message.content
 
 if __name__ == "__main__":
     test_prompt = "Hello, how are you?"
